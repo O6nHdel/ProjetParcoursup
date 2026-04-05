@@ -1,0 +1,24 @@
+// Variables
+@primary-color: #2271b1;
+@bg-color: #f9f9f9;
+@border-color: #ddd;
+
+// Mixin
+.box-shadow() {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Style
+.pp-form-wrapper {
+  background: @bg-color;
+  padding: 20px;
+  border: 1px solid @border-color;
+  border-radius: 8px;
+  .box-shadow();
+
+  h3 {
+    color: @primary-color;
+    border-bottom: 2px solid @primary-color;
+    padding-bottom: 10px;
+  }
+}
