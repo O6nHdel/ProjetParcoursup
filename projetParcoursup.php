@@ -31,6 +31,24 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
+// --- ⚡ INTERCEPTEUR D'EXPORT (AVANT TOUT AFFICHAGE) ---
+// On le place ici pour qu'il s'exécute très tôt dans le cycle de vie de WordPress
+add_action('admin_init', function() {
+    if (isset($_GET['page']) && $_GET['page'] === 'pp-votes-list' && isset($_GET['action']) && $_GET['action'] === 'export_csv') {
+        
+        // On charge manuellement les dépendances nécessaires
+        require_once PP_PATH . 'classes/Crud/Votes.php';
+        require_once PP_PATH . 'classes/Crud/Campaign.php';
+        
+        $view_file = PP_PATH . 'classes/views/VotesList.php';
+        if (file_exists($view_file)) {
+            // L'inclusion va déclencher le bloc "if export_csv" au début de VotesList.php
+            include $view_file;
+            exit; // On coupe court pour envoyer le fichier CSV pur
+        }
+    }
+});
+
 // --- CHARGEMENT DU DESIGN ---
 add_action('wp_enqueue_scripts', function() {
     wp_enqueue_style('pp-style', PP_URL . 'assets/css/style.css', [], '1.0');
@@ -40,9 +58,7 @@ add_action('wp_enqueue_scripts', function() {
 add_action('template_redirect', function() {
     if (!is_admin() && !is_user_logged_in()) {
         global $post;
-        // Si la page contient le formulaire de vœux, on redirige vers la page de connexion
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'parcoursup_form')) {
-            // Remplace "/connexion/" par le bon slug de ta page si besoin
             wp_redirect(home_url('/index.php/connexion/'), 302);
             exit;
         }
@@ -65,15 +81,12 @@ add_action('plugins_loaded', function() {
     }
     
     // --- 2. ENREGISTREMENT DES SHORTCODES ---
-    
-    // Formulaire de Vœux
     $shortcode_file = PP_PATH . 'classes/Shortcodes/VoeuxForm.php';
     if (file_exists($shortcode_file)) {
         require_once $shortcode_file;
         new PP_Shortcodes_VoeuxForm();
     }
 
-    // Formulaire d'Authentification (Nouveau)
     $auth_file = PP_PATH . 'classes/Shortcodes/AuthForm.php';
     if (file_exists($auth_file)) {
         require_once $auth_file;
@@ -96,13 +109,14 @@ add_action('plugins_loaded', function() {
 });
 
 /**
- * Fonction d'affichage de la vue Admin
+ * Fonction d'affichage de la vue Admin (Affichage normal)
  */
 function pp_display_votes_view() {
     $crud_file = PP_PATH . 'classes/Crud/Votes.php';
-    if (file_exists($crud_file)) {
-        require_once $crud_file;
-    }
+    $campaign_file = PP_PATH . 'classes/Crud/Campaign.php';
+    
+    if (file_exists($crud_file)) require_once $crud_file;
+    if (file_exists($campaign_file)) require_once $campaign_file;
 
     $view_file = PP_PATH . 'classes/views/VotesList.php';
     
