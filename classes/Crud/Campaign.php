@@ -102,4 +102,16 @@ class PP_Crud_Campaign {
             $id
         ));
     }
+
+    public function get_current_active() {
+    global $wpdb;
+    $now = date('Y-m-d H:i:s');
+    // On cherche la campagne dont la date actuelle est entre start et end [cite: 14, 37]
+    return $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}ps_campaign 
+         WHERE start_date <= %s AND end_date >= %s 
+         LIMIT 1", 
+        $now, $now
+    ));
+}
 }
