@@ -31,19 +31,32 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
-/**
- * Initialisation du plugin
- */
+// --- CHARGEMENT DU DESIGN ---
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_style('pp-style', PP_URL . 'assets/css/style.css', [], '1.0');
+});
+
+// --- SÉCURITÉ : REDIRECTION DES NON-CONNECTÉS (302) ---
+add_action('template_redirect', function() {
+    if (!is_admin() && !is_user_logged_in()) {
+        global $post;
+        // Si la page contient le formulaire de vœux, on redirige vers la page de connexion
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'parcoursup_form')) {
+            // Remplace "/connexion/" par le bon slug de ta page si besoin
+            wp_redirect(home_url('/index.php/connexion/'), 302);
+            exit;
+        }
+    }
+});
+
 add_action('plugins_loaded', function() {
     
     // --- 1. CHARGEMENT DES CLASSES ET ACTIONS ---
     if (is_admin()) {
-        // Charge l'administration principale
         if (class_exists('PP_Main_Admin')) {
             new PP_Main_Admin();
         }
     } else {
-        // Charge la sécurité Front (Login obligatoire)
         $front_file = PP_PATH . 'classes/actions/FrontIndex.php';
         if (file_exists($front_file)) {
             require_once $front_file;
@@ -51,59 +64,59 @@ add_action('plugins_loaded', function() {
         }
     }
     
-    // --- 2. ENREGISTREMENT DU SHORTCODE ---
+    // --- 2. ENREGISTREMENT DES SHORTCODES ---
+    
+    // Formulaire de Vœux
     $shortcode_file = PP_PATH . 'classes/Shortcodes/VoeuxForm.php';
     if (file_exists($shortcode_file)) {
         require_once $shortcode_file;
         new PP_Shortcodes_VoeuxForm();
     }
 
+    // Formulaire d'Authentification (Nouveau)
+    $auth_file = PP_PATH . 'classes/Shortcodes/AuthForm.php';
+    if (file_exists($auth_file)) {
+        require_once $auth_file;
+        new PP_Shortcodes_AuthForm();
+    }
+
     // --- 3. MENU ADMIN : LISTE DES VŒUX ---
     if (is_admin()) {
         add_action('admin_menu', function() {
             add_submenu_page(
-                'pp-parcoursup',      // Slug parent
-                'Liste des Vœux',     // Titre fenêtre
-                'Voir les Vœux',      // Texte menu
+                'pp-parcoursup',      
+                'Liste des Vœux',     
+                'Voir les Vœux',      
                 'manage_options', 
                 'pp-votes-list', 
-                'pp_display_votes_view' // Fonction de rappel définie juste après
+                'pp_display_votes_view' 
             );
         });
     }
 });
 
 /**
- * Fonction d'affichage de la vue (Hors du bloc plugins_loaded pour être accessible)
+ * Fonction d'affichage de la vue Admin
  */
 function pp_display_votes_view() {
-    // On charge le CRUD de données
     $crud_file = PP_PATH . 'classes/Crud/Votes.php';
     if (file_exists($crud_file)) {
         require_once $crud_file;
     }
 
-    // On affiche le HTML de la vue
     $view_file = PP_PATH . 'classes/views/VotesList.php';
     
     if (file_exists($view_file)) {
         include $view_file;
     } else {
-        // --- LE DÉTECTEUR D'ERREUR EST ICI ---
         echo "<div class='wrap' style='background: white; padding: 20px; border-left: 4px solid red; margin-top:20px;'>";
         echo "<h2>🚨 Fichier introuvable</h2>";
-        echo "<p>WordPress cherche exactement ce chemin sur ton ordinateur :</p>";
-        echo "<p><strong style='color:red; font-size:16px;'>" . $view_file . "</strong></p>";
-        echo "<ul>";
-        echo "<li>Vérifie que le dossier s'appelle bien <b>views</b> (avec un 's' et tout en minuscules).</li>";
-        echo "<li>Vérifie que le fichier s'appelle bien <b>VotesList.php</b> (avec un V et un L majuscules).</li>";
-        echo "</ul>";
         echo "</div>";
     }
 }
 
 /**
- * Hook d'activation : Création des tables SQL
+ * Hook d'activation
  */
 register_activation_hook(__FILE__, function() {
     $installer = new PP_Install_DbInstaller();
