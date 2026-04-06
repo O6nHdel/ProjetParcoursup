@@ -4,8 +4,8 @@
  */
 
 // 1. INITIALISATION DES DONNÉES
-$crud = new PP_Crud_Votes();
-$campaign_crud = new PP_Crud_Campaign();
+$crud = new projetParcoursup_Crud_Votes();
+$campaign_crud = new projetParcoursup_Crud_Campaign();
 
 // Récupération de la campagne sélectionnée pour le filtre
 $selected_campaign = isset($_GET['campaign_id']) ? intval($_GET['campaign_id']) : 0;
@@ -67,6 +67,10 @@ foreach ($all_votes as $v) {
 <div class="wrap">
     <h1 class="wp-heading-inline">📊 Récapitulatif des Vœux Étudiants</h1>
     
+    <a href="<?php echo esc_url(admin_url('admin.php?page=pp-admin')); ?>" class="page-title-action">
+        &larr; Retour aux campagnes
+    </a>
+
     <a href="admin.php?page=pp-votes-list&action=export_csv&campaign_id=<?php echo $selected_campaign; ?>" class="page-title-action">
     📥 Exporter en CSV
     </a>

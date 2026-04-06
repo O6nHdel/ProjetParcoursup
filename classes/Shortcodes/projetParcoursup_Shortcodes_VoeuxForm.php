@@ -1,6 +1,6 @@
 <?php
 
-class PP_Shortcodes_VoeuxForm {
+class projetParcoursup_Shortcodes_VoeuxForm {
 
     public function __construct() {
         add_shortcode('parcoursup_form', [$this, 'render_form']);
@@ -44,7 +44,10 @@ class PP_Shortcodes_VoeuxForm {
 
         $user_id = get_current_user_id();
         $current_user = wp_get_current_user(); // Récupération des infos de l'étudiant
-        $campaign_crud = new PP_Crud_Campaign();
+        
+        // CORRECTION ICI : Utilisation du nouveau nom de la classe CRUD
+        $campaign_crud = new projetParcoursup_Crud_Campaign();
+        
         $table_stc = $wpdb->prefix . 'ps_student_to_campaign';
 
         // --- TRAITEMENT DE L'INSCRIPTION (POST) ---

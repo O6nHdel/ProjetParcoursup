@@ -1,6 +1,6 @@
 <?php
 
-class PP_Install_DbInstaller {
+class projetParcoursup_Install_DbInstaller {
 
     public function install() {
         global $wpdb;
@@ -26,7 +26,7 @@ class PP_Install_DbInstaller {
             lname_student varchar(100) NOT NULL,
             fname_student varchar(100) NOT NULL,
             email_student varchar(100) NOT NULL,
-            password varchar(255) NOT NULL, -- 
+            password varchar(255) NOT NULL, 
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY  (id_student)
         ) $charset_collate;
@@ -59,7 +59,7 @@ class PP_Install_DbInstaller {
             id_student_choice mediumint(9) NOT NULL AUTO_INCREMENT,
             id_stc mediumint(9) NOT NULL,
             id_choice mediumint(9) NOT NULL,
-            choice_order tinyint(1) NOT NULL, -- [cite: 18]
+            choice_order tinyint(1) NOT NULL, 
             PRIMARY KEY  (id_student_choice)
         ) $charset_collate;";
 

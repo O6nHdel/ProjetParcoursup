@@ -1,6 +1,6 @@
 <?php
 
-class PP_Shortcodes_AuthForm {
+class projetParcoursup_Shortcodes_AuthForm {
 
     public function __construct() {
         add_shortcode('parcoursup_auth', [$this, 'render_form']);
