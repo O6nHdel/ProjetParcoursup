@@ -1,13 +1,13 @@
 <?php
 
-class PP_Crud_Votes {
+class projetParcoursup_Crud_Votes {
 
     public function get_all_votes($campaign_id = 0) {
         global $wpdb;
         
-        $table_votes = $wpdb->prefix . 'ps_student_choices';
-        $table_stc   = $wpdb->prefix . 'ps_student_to_campaign';
-        $table_users = $wpdb->users; // Table native WP
+        $table_votes   = $wpdb->prefix . 'ps_student_choices';
+        $table_stc     = $wpdb->prefix . 'ps_student_to_campaign';
+        $table_users   = $wpdb->users; // Table native WP
         $table_choices = $wpdb->prefix . 'ps_choices';
 
         // Requête SQL avec le double JOIN pour remonter jusqu'à l'utilisateur
@@ -29,5 +29,24 @@ class PP_Crud_Votes {
         $sql .= " ORDER BY u.display_name ASC, v.choice_order ASC";
 
         return $wpdb->get_results($sql);
+    }
+
+    /**
+     * NOUVELLE FONCTION :
+     * Compte combien de votes sont associés à une formation précise.
+     * Utile pour empêcher la suppression d'une formation utilisée.
+     */
+    public function count_votes_by_choice($choice_id) {
+        global $wpdb;
+        
+        // On utilise ici le vrai nom de ta table que j'ai vu dans ta fonction du dessus
+        $table_votes = $wpdb->prefix . 'ps_student_choices'; 
+        
+        $query = $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$table_votes} WHERE id_choice = %d",
+            intval($choice_id)
+        );
+        
+        return intval($wpdb->get_var($query));
     }
 }

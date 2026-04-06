@@ -1,12 +1,14 @@
 <?php
-class InssetProjet_Crud_Front {
+
+class projetParcoursup_Crud_Front {
 
     /**
      * Vérifie si l'étudiant est déjà inscrit à la campagne
      */
     public function get_student_registration($id_student, $id_campaign) {
         global $wpdb;
-        $table = $wpdb->prefix . 'student_to_campaign';
+        // Ajout du préfixe 'ps_' pour correspondre au reste de ton plugin
+        $table = $wpdb->prefix . 'ps_student_to_campaign';
         
         return $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM $table WHERE id_student = %d AND id_campaign = %d",
@@ -20,7 +22,8 @@ class InssetProjet_Crud_Front {
      */
     public function register_student_to_campaign($id_student, $id_campaign) {
         global $wpdb;
-        $table = $wpdb->prefix . 'student_to_campaign';
+        // Ajout du préfixe 'ps_' pour correspondre au reste de ton plugin
+        $table = $wpdb->prefix . 'ps_student_to_campaign';
 
         // Génération d'un numéro de candidat unique (ex: CAND-2026-4852)
         $num_candidate = 'CAND-' . date('Y') . '-' . mt_rand(1000, 9999);

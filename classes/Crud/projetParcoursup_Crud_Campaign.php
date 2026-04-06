@@ -1,12 +1,12 @@
 <?php
 
-class PP_Crud_Campaign {
+class projetParcoursup_Crud_Campaign {
     private $table_campaigns;
     private $table_choices;
 
     public function __construct() {
         global $wpdb;
-        // On définit les noms des tables avec le préfixe WordPress [cite: 26, 28]
+        // On définit les noms des tables avec le préfixe WordPress
         $this->table_campaigns = $wpdb->prefix . 'ps_campaigns';
         $this->table_choices   = $wpdb->prefix . 'ps_choices';
     }
@@ -55,24 +55,24 @@ class PP_Crud_Campaign {
     }
     
     /**
-     * Règle de suppression : Interdit si un étudiant a déjà formulé des vœux [cite: 51]
+     * Règle de suppression : Interdit si un étudiant a déjà formulé des vœux
      */
     public function delete($id_campaign) {
         global $wpdb;
         $table_pivot = $wpdb->prefix . 'ps_student_to_campaign';
 
-        // 1. Vérifie si des étudiants sont déjà liés à cette campagne [cite: 51]
+        // 1. Vérifie si des étudiants sont déjà liés à cette campagne
         $count = $wpdb->get_var($wpdb->prepare(
             "SELECT COUNT(*) FROM $table_pivot WHERE id_campaign = %d",
             $id_campaign
         ));
 
-        // 2. Si vœux existants, suppression refusée [cite: 51]
+        // 2. Si vœux existants, suppression refusée
         if ($count > 0) {
             return false;
         }
 
-        // 3. Sinon, on supprime la campagne [cite: 47]
+        // 3. Sinon, on supprime la campagne
         return $wpdb->delete($this->table_campaigns, ['id_campaign' => $id_campaign]);
     }
 
@@ -103,15 +103,19 @@ class PP_Crud_Campaign {
         ));
     }
 
+    /**
+     * Récupère la campagne actuellement active
+     */
     public function get_current_active() {
-    global $wpdb;
-    $now = date('Y-m-d H:i:s');
-    // On cherche la campagne dont la date actuelle est entre start et end [cite: 14, 37]
-    return $wpdb->get_row($wpdb->prepare(
-        "SELECT * FROM {$wpdb->prefix}ps_campaign 
-         WHERE start_date <= %s AND end_date >= %s 
-         LIMIT 1", 
-        $now, $now
-    ));
-}
+        global $wpdb;
+        $now = date('Y-m-d H:i:s');
+        
+        // Utilisation de la variable correcte au lieu de ps_campaign sans "s"
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM {$this->table_campaigns} 
+             WHERE start_date <= %s AND end_date >= %s 
+             LIMIT 1", 
+            $now, $now
+        ));
+    }
 }
