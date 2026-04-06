@@ -1,12 +1,199 @@
 .pp-form-wrapper {
-  background: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #f8fafc;
+  padding: 40px 20px;
+  min-height: 400px;
+  border-radius: 16px;
+  max-width: 1000px;
+  margin: 20px auto;
 }
-.pp-form-wrapper h3 {
-  color: #2271b1;
-  border-bottom: 2px solid #2271b1;
-  padding-bottom: 10px;
+.pp-form-wrapper .student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 15px 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.pp-form-wrapper .student-header .student-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.pp-form-wrapper .student-header .student-info .avatar-circle {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+}
+.pp-form-wrapper .student-header .student-info .student-text {
+  display: flex;
+  flex-direction: column;
+}
+.pp-form-wrapper .student-header .student-info .student-text .welcome-msg {
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.pp-form-wrapper .student-header .student-info .student-text .student-name {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1rem;
+}
+.pp-form-wrapper .student-header .logout-link {
+  font-size: 0.85rem;
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.pp-form-wrapper .student-header .logout-link:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateX(3px);
+}
+.pp-form-wrapper .header-section {
+  margin-bottom: 35px;
+  text-align: center;
+}
+.pp-form-wrapper .header-section h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.pp-form-wrapper .header-section p {
+  color: #64748b;
+  font-size: 1rem;
+}
+.pp-form-wrapper .pp-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+.pp-form-wrapper .pp-dashboard .campaign-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pp-form-wrapper .pp-dashboard .campaign-card:hover {
+  background: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border-color: #2563eb;
+  transform: translateY(-5px);
+}
+.pp-form-wrapper .pp-dashboard .campaign-card strong {
+  font-size: 1.3rem;
+  color: #1e293b;
+  margin-bottom: 20px;
+  display: block;
+}
+.pp-form-wrapper #parcoursup-voeu-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+.pp-form-wrapper #parcoursup-voeu-form p {
+  margin-bottom: 25px;
+  position: relative;
+}
+.pp-form-wrapper #parcoursup-voeu-form p label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+.pp-form-wrapper #parcoursup-voeu-form p select {
+  appearance: none;
+  width: 100%;
+  padding: 14px 18px;
+  background: #f1f5f9;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.pp-form-wrapper #parcoursup-voeu-form p select:focus {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  outline: none;
+}
+.pp-form-wrapper #parcoursup-voeu-form p select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+.pp-form-wrapper #parcoursup-voeu-form p::after {
+  content: '↓';
+  position: absolute;
+  right: 20px;
+  top: 42px;
+  color: #64748b;
+  pointer-events: none;
+}
+.pp-form-wrapper .button-primary {
+  width: 100%;
+  height: 55px;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all 0.2s ease !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.pp-form-wrapper .button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+  opacity: 0.95;
+}
+.pp-form-wrapper .status-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: #a8f7dd;
+  color: #10b981;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid #87f5d0;
+}
+.pp-form-wrapper .voeux-valides-list li {
+  transition: padding 0.2s ease;
+}
+.pp-form-wrapper .voeux-valides-list li:hover {
+  padding-left: 10px;
+  color: #2563eb;
 }

@@ -51,7 +51,8 @@ add_action('admin_init', function() {
 
 // --- CHARGEMENT DU DESIGN ---
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_style('pp-style', PP_URL . 'assets/css/style.css', [], '1.0');
+    // On utilise time() pour casser le cache pendant le développement
+    wp_enqueue_style('pp-style', PP_URL . 'assets/css/style.css', [], time());
 });
 
 // --- SÉCURITÉ : REDIRECTION DES NON-CONNECTÉS (302) ---
